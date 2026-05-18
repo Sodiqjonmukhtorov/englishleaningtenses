@@ -47,6 +47,30 @@ export const TENSES: TenseData[] = [
       "Siz qayerda yashaysiz?"
     ],
     lifehack: "He/She/It = +S | Does = S yo'q",
+    interactiveExercises: [
+      {
+        id: "ps-1",
+        type: "multiple-choice",
+        question: "She ___ to school every day.",
+        options: ["go", "goes", "going", "gone"],
+        correctAnswer: "goes",
+        explanation: "Uchinchi shaxs birlikda (She) fe'lga -es qo'shiladi."
+      },
+      {
+        id: "ps-2",
+        type: "fill-in-the-blank",
+        question: "I ___ (not/like) coffee.",
+        correctAnswer: "do not like",
+        explanation: "Present Simple'da inkor gap 'do not' yoki 'does not' orqali yasaladi."
+      },
+      {
+        id: "ps-3",
+        type: "translation",
+        question: "Suv 100 darajada qaynaydi.",
+        correctAnswer: "Water boils at 100 degrees.",
+        explanation: "Tabiat hodisalari va umumiy haqiqatlar doim Present Simple'da bo'ladi."
+      }
+    ]
   },
   {
     id: "present-continuous",
@@ -93,6 +117,23 @@ export const TENSES: TenseData[] = [
       "Havo soviyapti."
     ],
     lifehack: "am / is / are + verb + ing = har doim bor",
+    interactiveExercises: [
+      {
+        id: "pc-1",
+        type: "multiple-choice",
+        question: "Listen! They ___ the piano.",
+        options: ["play", "are playing", "plays", "playing"],
+        correctAnswer: "are playing",
+        explanation: "'Listen!' hozir bo'layotgan ishni bildiradi."
+      },
+      {
+        id: "pc-2",
+        type: "fill-in-the-blank",
+        question: "What ___ you ___ (do) right now?",
+        correctAnswer: "are doing",
+        explanation: "Savol gapda am/is/are subject'dan oldinga o'tadi."
+      }
+    ]
   },
   {
     id: "present-perfect",
@@ -139,6 +180,23 @@ export const TENSES: TenseData[] = [
       "Ular hali kelishmadi."
     ],
     lifehack: "have/has + V3 = natija hozir muhim!",
+    interactiveExercises: [
+      {
+        id: "pp-1",
+        type: "multiple-choice",
+        question: "I ___ my keys. I can't find them.",
+        options: ["lose", "lost", "have lost", "am losing"],
+        correctAnswer: "have lost",
+        explanation: "Hozirgi natija muhim bo'lsa (kalit yo'q), Present Perfect ishlatiladi."
+      },
+      {
+        id: "pp-2",
+        type: "fill-in-the-blank",
+        question: "She ___ (already / see) this film.",
+        correctAnswer: "has already seen",
+        explanation: "'Already' signal so'zi Present Perfect bilan keladi."
+      }
+    ]
   },
   {
     id: "present-perfect-continuous",
@@ -184,6 +242,23 @@ export const TENSES: TenseData[] = [
       "U uch kundan beri uxlamayapti."
     ],
     lifehack: "have/has been + verb + ing | for / since = 90% shu zamon",
+    interactiveExercises: [
+      {
+        id: "ppc-1",
+        type: "multiple-choice",
+        question: "I ___ here for two hours.",
+        options: ["wait", "have been waiting", "waited", "am waiting"],
+        correctAnswer: "have been waiting",
+        explanation: "Davomiylik (for two hours) Present Perfect Continuous'ni talab qiladi."
+      },
+      {
+        id: "ppc-2",
+        type: "fill-in-the-blank",
+        question: "How long ___ she ___ (work) there?",
+        correctAnswer: "has been working",
+        explanation: "Qancha vaqtdan beri davom etayotgan savol."
+      }
+    ]
   },
   {
     id: "past-simple",
@@ -231,6 +306,23 @@ export const TENSES: TenseData[] = [
       "U menga qo'ng'iroq qilmadi."
     ],
     lifehack: "Positive → V2 | Negative / Question → did + V1",
+    interactiveExercises: [
+      {
+        id: "pas-1",
+        type: "multiple-choice",
+        question: "I ___ to the cinema yesterday.",
+        options: ["go", "went", "have gone", "was going"],
+        correctAnswer: "went",
+        explanation: "Yesterday' aniq o'tgan vaqtni bildiradi."
+      },
+      {
+        id: "pas-2",
+        type: "fill-in-the-blank",
+        question: "Did you ___ (meet) him last week?",
+        correctAnswer: "meet",
+        explanation: "'Did' yordamchi fe'li bor gapda asosiy fe'l V1 shaklida bo'ladi."
+      }
+    ]
   },
   {
     id: "past-continuous",
@@ -276,6 +368,23 @@ export const TENSES: TenseData[] = [
       "Men ishlamayotgan edim."
     ],
     lifehack: "was/were + V-ing = o'tgan zamon davom",
+    interactiveExercises: [
+      {
+        id: "pac-1",
+        type: "multiple-choice",
+        question: "What ___ you doing at 8 PM last night?",
+        options: ["was", "were", "did", "are"],
+        correctAnswer: "were",
+        explanation: "'You' uchun 'were' ishlatiladi."
+      },
+      {
+        id: "pac-2",
+        type: "fill-in-the-blank",
+        question: "I ___ (study) when the lights went out.",
+        correctAnswer: "was studying",
+        explanation: "Boshqa ish bo'lganda davom etayotgan jarayon."
+      }
+    ]
   },
   {
     id: "past-perfect",
@@ -321,6 +430,16 @@ export const TENSES: TenseData[] = [
       "Ular hali kelishmagan edi."
     ],
     lifehack: "had + V3 | 2 ta o'tgan ish → oldingisi Past Perfect",
+    interactiveExercises: [
+      {
+        id: "pap-1",
+        type: "multiple-choice",
+        question: "When I arrived, the train ___.",
+        options: ["leave", "left", "had left", "has left"],
+        correctAnswer: "had left",
+        explanation: "Men kelishimdan oldin poezd ketib bo'lgan edi."
+      }
+    ]
   },
   {
     id: "past-perfect-continuous",
@@ -366,6 +485,15 @@ export const TENSES: TenseData[] = [
       "U kelganida, men dars tayyorlayotgan edim."
     ],
     lifehack: "had been + V-ing | for/since = signal",
+    interactiveExercises: [
+      {
+        id: "papc-1",
+        type: "fill-in-the-blank",
+        question: "She ___ (sleep) for 10 hours before I woke her up.",
+        correctAnswer: "had been sleeping",
+        explanation: "O'tmishdagi boshqa ishdan oldingi uzoq davomiylik."
+      }
+    ]
   },
   {
     id: "future-simple",
@@ -412,6 +540,23 @@ export const TENSES: TenseData[] = [
       "Men buni qilmayman."
     ],
     lifehack: "will + V1 | hamma bilan bir xil",
+    interactiveExercises: [
+      {
+        id: "fs-1",
+        type: "multiple-choice",
+        question: "I think it ___ tomorrow.",
+        options: ["rain", "will rain", "rains", "is raining"],
+        correctAnswer: "will rain",
+        explanation: "Taxmin (I think) uchun 'will' ishlatiladi."
+      },
+      {
+        id: "fs-2",
+        type: "fill-in-the-blank",
+        question: "I ___ (help) you with your bags.",
+        correctAnswer: "will help",
+        explanation: "Yordam taklif qilish uchun 'will' ishlatiladi."
+      }
+    ]
   },
   {
     id: "future-continuous",
@@ -457,6 +602,23 @@ export const TENSES: TenseData[] = [
       "Men u yerda bo'lmayman."
     ],
     lifehack: "will be + V-ing = kelajak + davom",
+    interactiveExercises: [
+      {
+        id: "fuc-1",
+        type: "multiple-choice",
+        question: "This time tomorrow, I ___ on a beach.",
+        options: ["will sit", "will be sitting", "sit", "am sitting"],
+        correctAnswer: "will be sitting",
+        explanation: "Kelajakdagi aniq bir vaqtda davom etib turgan ish."
+      },
+      {
+        id: "fuc-2",
+        type: "fill-in-the-blank",
+        question: "Will you ___ (use) your car this evening?",
+        correctAnswer: "be using",
+        explanation: "Kelajakdagi reja yoki so'rov."
+      }
+    ]
   },
   {
     id: "future-perfect",
@@ -502,6 +664,16 @@ export const TENSES: TenseData[] = [
       "U hali bitirmagan bo'ladi."
     ],
     lifehack: "will have + V3 | by = 90% shu zamon",
+    interactiveExercises: [
+      {
+        id: "fup-1",
+        type: "multiple-choice",
+        question: "By next year, I ___ my degree.",
+        options: ["finish", "will finish", "will have finished", "finished"],
+        correctAnswer: "will have finished",
+        explanation: "'By next year' kelajakdagi deadline."
+      }
+    ]
   },
   {
     id: "future-perfect-continuous",
@@ -547,5 +719,14 @@ export const TENSES: TenseData[] = [
       "Siz u yerda bo'lasizmi?"
     ],
     lifehack: "will have been + V-ing | for / since / by = signal",
+    interactiveExercises: [
+      {
+        id: "fupc-1",
+        type: "fill-in-the-blank",
+        question: "By next month, I ___ (live) here for a year.",
+        correctAnswer: "will have been living",
+        explanation: "Kelajakdagi deadline'ga qadar davom etib kelayotgan ish."
+      }
+    ]
   },
 ];

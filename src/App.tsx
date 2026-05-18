@@ -10,16 +10,12 @@ import {
   X,
   Search,
   ArrowRight,
-  Info,
   Check,
-  Send,
-  Loader2,
-  Sparkles
+  Volume2
 } from "lucide-react";
 import { TENSES } from "./constants";
 import { TenseData } from "./types";
-import { checkTranslation, CheckResult } from "./services/aiService";
-import AIChat from "./components/AIChat";
+import ExerciseSection from "./components/ExerciseSection";
 
 export default function App() {
   const [selectedTenseId, setSelectedTenseId] = useState<string>(TENSES[0].id);
@@ -27,8 +23,6 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [showAnswers, setShowAnswers] = useState<Record<string, boolean>>({});
   const [userAnswers, setUserAnswers] = useState<Record<string, string>>({});
-  const [checkResults, setCheckResults] = useState<Record<string, CheckResult | null>>({});
-  const [loadingStates, setLoadingStates] = useState<Record<string, boolean>>({});
 
   const selectedTense = useMemo(() => 
     TENSES.find(t => t.id === selectedTenseId) || TENSES[0],
@@ -50,24 +44,6 @@ export default function App() {
       ...prev,
       [`${selectedTenseId}-${index}`]: value
     }));
-  };
-
-  const handleCheck = async (index: number, uzbekSentence: string) => {
-    const answerKey = `${selectedTenseId}-${index}`;
-    const userTranslation = userAnswers[answerKey];
-
-    if (!userTranslation || userTranslation.trim() === "") return;
-
-    setLoadingStates(prev => ({ ...prev, [answerKey]: true }));
-
-    try {
-      const result = await checkTranslation(uzbekSentence, userTranslation, selectedTense.title);
-      setCheckResults(prev => ({ ...prev, [answerKey]: result }));
-    } catch (error) {
-      console.error("Error checking translation:", error);
-    } finally {
-      setLoadingStates(prev => ({ ...prev, [answerKey]: false }));
-    }
   };
 
   return (
@@ -181,7 +157,7 @@ export default function App() {
                 {/* Hero Section */}
                 <section>
                   <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-bold uppercase tracking-wider mb-4">
-                    <Info className="w-3.5 h-3.5" />
+                    <BookOpen className="w-3.5 h-3.5" />
                     English Grammar
                   </div>
                   <h2 className="text-4xl lg:text-5xl font-extrabold tracking-tight mb-4 text-gray-900">
@@ -215,14 +191,44 @@ export default function App() {
                       <div className="flex flex-col md:flex-row md:items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-100">
                         <span className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1 md:mb-0">✅ Oddiy gap</span>
                         <code className="text-lg font-mono font-bold text-blue-600">{selectedTense.formula.positive}</code>
+                        <button 
+                          onClick={() => {
+                            const utterance = new SpeechSynthesisUtterance(selectedTense.formula.positive);
+                            utterance.lang = "en-US";
+                            window.speechSynthesis.speak(utterance);
+                          }}
+                          className="p-2 hover:bg-blue-100 text-blue-600 rounded-full transition-colors ml-2"
+                        >
+                          <Volume2 className="w-5 h-5" />
+                        </button>
                       </div>
                       <div className="flex flex-col md:flex-row md:items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-100">
                         <span className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1 md:mb-0">❌ Inkor gap</span>
                         <code className="text-lg font-mono font-bold text-red-500">{selectedTense.formula.negative}</code>
+                        <button 
+                          onClick={() => {
+                            const utterance = new SpeechSynthesisUtterance(selectedTense.formula.negative);
+                            utterance.lang = "en-US";
+                            window.speechSynthesis.speak(utterance);
+                          }}
+                          className="p-2 hover:bg-red-50 text-red-500 rounded-full transition-colors ml-2"
+                        >
+                          <Volume2 className="w-5 h-5" />
+                        </button>
                       </div>
                       <div className="flex flex-col md:flex-row md:items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-100">
                         <span className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1 md:mb-0">❓ Savol gap</span>
                         <code className="text-lg font-mono font-bold text-green-600">{selectedTense.formula.question}</code>
+                        <button 
+                          onClick={() => {
+                            const utterance = new SpeechSynthesisUtterance(selectedTense.formula.question);
+                            utterance.lang = "en-US";
+                            window.speechSynthesis.speak(utterance);
+                          }}
+                          className="p-2 hover:bg-green-50 text-green-600 rounded-full transition-colors ml-2"
+                        >
+                          <Volume2 className="w-5 h-5" />
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -237,20 +243,33 @@ export default function App() {
                     </h3>
                     <div className="space-y-3">
                       {selectedTense.examples.map((ex, idx) => (
-                        <div key={idx} className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm group hover:border-blue-200 transition-colors">
-                          <p className="text-lg font-bold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors">{ex.en}</p>
-                          <p className="text-sm text-gray-500 font-medium italic">→ {ex.uz}</p>
+                        <div key={idx} className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm group hover:border-blue-200 transition-colors flex items-center justify-between">
+                          <div>
+                            <p className="text-lg font-bold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors">{ex.en}</p>
+                            <p className="text-sm text-gray-500 font-medium italic">→ {ex.uz}</p>
+                          </div>
+                          <button 
+                            onClick={() => {
+                              const utterance = new SpeechSynthesisUtterance(ex.en);
+                              utterance.lang = "en-US";
+                              window.speechSynthesis.speak(utterance);
+                            }}
+                            className="p-2 hover:bg-blue-50 text-blue-600 rounded-full transition-colors shrink-0"
+                            title="Pronounce"
+                          >
+                            <Volume2 className="w-4 h-4" />
+                          </button>
                         </div>
                       ))}
                     </div>
                   </section>
 
-                  <section className="space-y-4">
-                    <h3 className="text-lg font-bold flex items-center gap-2 px-2">
-                      <AlertCircle className="w-5 h-5 text-orange-500" />
-                      Muhim qoidalar
-                    </h3>
+                  <section className="space-y-6">
                     <div className="bg-orange-50/50 rounded-3xl p-6 border border-orange-100">
+                      <h4 className="text-sm font-bold text-orange-700 flex items-center gap-2 mb-3">
+                        <AlertCircle className="w-4 h-4" />
+                        Muhim qoidalar
+                      </h4>
                       <ul className="space-y-4">
                         {selectedTense.rules?.map((rule, idx) => (
                           <li key={idx} className="flex gap-3 text-sm font-medium text-gray-700 leading-relaxed">
@@ -278,6 +297,79 @@ export default function App() {
                   </div>
                 </section>
 
+                {/* Practice Section */}
+                <section className="bg-blue-600 rounded-3xl p-6 lg:p-8 text-white shadow-xl shadow-blue-200">
+                  <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+                    <BookOpen className="w-6 h-6" />
+                    Amaliyot: Tarjima qiling (o'zingizni sinang) 🧠
+                  </h3>
+                  <div className="space-y-6">
+                    {selectedTense.miniExercise.map((item, idx) => {
+                      const answerKey = `${selectedTenseId}-${idx}`;
+                      const isRevealed = showAnswers[answerKey];
+                      return (
+                        <div key={idx} className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20 space-y-4">
+                          <div className="flex items-start gap-3">
+                            <span className="text-blue-200 font-bold mt-1 text-sm">{idx + 1}.</span>
+                            <p className="text-lg font-bold">{item.question}</p>
+                          </div>
+                          
+                          <div className="space-y-3">
+                            <input 
+                              type="text"
+                              placeholder="Tarjimangizni yozing..."
+                              value={userAnswers[answerKey] || ""}
+                              onChange={(e) => handleInputChange(idx, e.target.value)}
+                              className="w-full bg-white/20 border border-white/30 rounded-xl px-4 py-3 text-white placeholder:text-white/50 focus:outline-none focus:bg-white/30 transition-all"
+                            />
+                            
+                            <div className="flex items-center justify-between">
+                              <button 
+                                onClick={() => toggleAnswer(idx)}
+                                className="px-5 py-2 bg-white text-blue-600 rounded-xl text-sm font-bold hover:bg-blue-50 transition-colors"
+                              >
+                                {isRevealed ? "Javobni yashirish" : "Javobni ko'rish"}
+                              </button>
+                            </div>
+
+                            <AnimatePresence>
+                              {isRevealed && (
+                                <motion.div
+                                  initial={{ height: 0, opacity: 0 }}
+                                  animate={{ height: "auto", opacity: 1 }}
+                                  exit={{ height: 0, opacity: 0 }}
+                                  className="overflow-hidden"
+                                >
+                                  <div className="pt-4 mt-2 border-t border-white/10">
+                                    <span className="text-[10px] font-bold text-blue-200 uppercase tracking-widest block mb-1">To'g'ri javob:</span>
+                                    <div className="flex items-center gap-2 text-white font-bold text-lg font-mono">
+                                      <Check className="w-5 h-5 text-green-300" />
+                                      {item.answer}
+                                    </div>
+                                    <p className="text-blue-100 text-xs mt-2 italic font-medium opacity-80">
+                                      O'z javobingiz bilan solishtirib ko'ring.
+                                    </p>
+                                  </div>
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </section>
+
+                {/* Interactive Exercises Section */}
+                {selectedTense.interactiveExercises && selectedTense.interactiveExercises.length > 0 && (
+                  <section className="pt-4">
+                    <ExerciseSection 
+                      exercises={selectedTense.interactiveExercises} 
+                      tenseTitle={selectedTense.title}
+                    />
+                  </section>
+                )}
+
                 {/* Common Mistakes */}
                 <section className="bg-red-50/30 rounded-3xl border border-red-100 p-6 lg:p-8">
                   <h3 className="text-lg font-bold mb-6 flex items-center gap-2 text-red-700">
@@ -300,141 +392,7 @@ export default function App() {
                   </div>
                 </section>
 
-                {/* Mini Exercise */}
-                <section className="bg-blue-600 rounded-3xl p-6 lg:p-8 text-white shadow-xl shadow-blue-200">
-                  <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-                    <BookOpen className="w-6 h-6" />
-                    Mini mashq (o'zing sinab ko'r) 🧠
-                  </h3>
-                  <div className="space-y-4">
-                    {selectedTense.miniExercise.map((item, idx) => (
-                      <div key={idx} className="bg-white/10 backdrop-blur-md rounded-2xl p-4 border border-white/20">
-                        <div className="flex items-center justify-between gap-4">
-                          <p className="font-medium">{item.question}</p>
-                          <button 
-                            onClick={() => toggleAnswer(idx)}
-                            className="shrink-0 px-4 py-1.5 bg-white text-blue-600 rounded-full text-xs font-bold hover:bg-blue-50 transition-colors"
-                          >
-                            {showAnswers[`${selectedTenseId}-${idx}`] ? "Yashirish" : "Javobni ko'rish"}
-                          </button>
-                        </div>
-                        <AnimatePresence>
-                          {showAnswers[`${selectedTenseId}-${idx}`] && (
-                            <motion.div
-                              initial={{ height: 0, opacity: 0 }}
-                              animate={{ height: "auto", opacity: 1 }}
-                              exit={{ height: 0, opacity: 0 }}
-                              className="overflow-hidden"
-                            >
-                              <div className="pt-3 mt-3 border-t border-white/10 flex items-center gap-2 text-blue-100 font-bold italic">
-                                <ArrowRight className="w-4 h-4" />
-                                {item.answer}
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    ))}
-                  </div>
-                </section>
 
-                {/* Practice Section */}
-                <section className="space-y-8 pt-8 border-t border-gray-100">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-2xl font-bold flex items-center gap-3">
-                      <Sparkles className="w-6 h-6 text-blue-600" />
-                      Amaliyot: Tarjima qiling
-                    </h3>
-                    <div className="flex items-center gap-2 px-3 py-1 bg-blue-50 rounded-full">
-                      <Sparkles className="w-3.5 h-3.5 text-blue-600" />
-                      <span className="text-[10px] font-bold text-blue-700 uppercase tracking-widest">AI Teacher</span>
-                    </div>
-                  </div>
-
-                  <p className="text-gray-600 leading-relaxed">
-                    Quyidagi o'zbekcha gaplarni ingliz tiliga tarjima qiling. Bizning AI o'qituvchimiz 
-                    sizning javoblaringizni tekshirib, xatolaringizni tushuntirib beradi.
-                  </p>
-
-                  <div className="space-y-6">
-                    {selectedTense.practiceSentences?.map((sentence, idx) => {
-                      const answerKey = `${selectedTenseId}-${idx}`;
-                      const result = checkResults[answerKey];
-                      const isLoading = loadingStates[answerKey];
-
-                      return (
-                        <div key={idx} className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden transition-all hover:shadow-md">
-                          <div className="p-6 lg:p-8 space-y-6">
-                            <div className="flex items-start gap-4">
-                              <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center shrink-0 mt-1">
-                                <span className="text-xs font-bold text-gray-400">{idx + 1}</span>
-                              </div>
-                              <p className="text-lg font-bold text-gray-800 leading-tight">{sentence}</p>
-                            </div>
-
-                            <div className="relative">
-                              <input 
-                                type="text"
-                                placeholder="Inglizcha tarjimangizni yozing..."
-                                value={userAnswers[answerKey] || ""}
-                                onChange={(e) => handleInputChange(idx, e.target.value)}
-                                disabled={isLoading}
-                                className={`
-                                  w-full pl-6 pr-16 py-4 bg-gray-50 border-2 rounded-2xl text-lg transition-all focus:outline-none focus:ring-4
-                                  ${result 
-                                    ? result.isCorrect 
-                                      ? "border-green-200 focus:ring-green-500/10 focus:border-green-500" 
-                                      : "border-red-200 focus:ring-red-500/10 focus:border-red-500"
-                                    : "border-gray-100 focus:ring-blue-500/10 focus:border-blue-500"
-                                  }
-                                `}
-                              />
-                              <button 
-                                onClick={() => handleCheck(idx, sentence)}
-                                disabled={isLoading || !userAnswers[answerKey]}
-                                className={`
-                                  absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-xl flex items-center justify-center transition-all
-                                  ${isLoading || !userAnswers[answerKey]
-                                    ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                                    : "bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-200"
-                                  }
-                                `}
-                              >
-                                {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Send className="w-5 h-5" />}
-                              </button>
-                            </div>
-
-                            <AnimatePresence>
-                              {result && (
-                                <motion.div
-                                  initial={{ height: 0, opacity: 0 }}
-                                  animate={{ height: "auto", opacity: 1 }}
-                                  className="overflow-hidden"
-                                >
-                                  <div className={`mt-4 p-5 rounded-2xl border-l-4 space-y-3 ${result.isCorrect ? "bg-green-50 border-green-500" : "bg-red-50 border-red-500"}`}>
-                                    <div className="flex items-center gap-3">
-                                      {result.isCorrect ? <CheckCircle2 className="w-5 h-5 text-green-600" /> : <AlertCircle className="w-5 h-5 text-red-600" />}
-                                      <span className={`font-bold ${result.isCorrect ? "text-green-700" : "text-red-700"}`}>
-                                        {result.isCorrect ? "Barakalla!" : "Xato bor"}
-                                      </span>
-                                    </div>
-                                    <p className="text-gray-800 text-base leading-relaxed font-medium">{result.feedback}</p>
-                                    {!result.isCorrect && (
-                                      <div className="pt-3 border-t border-gray-200/50">
-                                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest block mb-1">To'g'ri variant:</span>
-                                        <p className="text-green-700 font-bold font-mono">{result.correctAnswer}</p>
-                                      </div>
-                                    )}
-                                  </div>
-                                </motion.div>
-                              )}
-                            </AnimatePresence>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </section>
 
                 {/* Lifehack */}
                 <section className="bg-yellow-50 rounded-3xl border border-yellow-200 p-6 lg:p-8 relative overflow-hidden">
@@ -455,7 +413,6 @@ export default function App() {
         </main>
       </div>
 
-      <AIChat />
       <style>{`
         .custom-scrollbar::-webkit-scrollbar {
           width: 6px;

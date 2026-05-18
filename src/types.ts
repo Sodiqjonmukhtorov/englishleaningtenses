@@ -1,3 +1,12 @@
+export interface Exercise {
+  id: string;
+  type: 'multiple-choice' | 'fill-in-the-blank' | 'translation';
+  question: string;
+  options?: string[];
+  correctAnswer: string;
+  explanation?: string;
+}
+
 export interface TenseData {
   id: string;
   title: string;
@@ -15,4 +24,5 @@ export interface TenseData {
   miniExercise: { question: string; answer: string }[];
   practiceSentences: string[];
   lifehack: string;
+  interactiveExercises?: Exercise[];
 }
